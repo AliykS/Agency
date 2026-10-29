@@ -1,14 +1,23 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
-namespace Agency
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+
+namespace Agency;
+
+public partial class EmploymentWindow : Window
 {
-    public partial class EmploymentWindow : Window
+    private readonly Window _mainWindow;
+
+    public EmploymentWindow(Window mainWindow)
     {
-        public EmploymentWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        _mainWindow = mainWindow;
+    }
+
+    private void BackButton_Click(object? sender, RoutedEventArgs e)
+    {
+        _mainWindow.Show();
+        _mainWindow.Activate();
+        Close();
     }
 }

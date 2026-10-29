@@ -1,11 +1,199 @@
+
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:local="using:Agency"
         x:Class="Agency.VacanciesWindow"
-        Title="VacanciesWindow">
-  <Grid Background="#F5F6FA">
+        Title="Вакансии — кадровое агентство"
+        Width="1100"
+        Height="720"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen">
 
+    <Grid Background="#F3F5F9"
+          RowDefinitions="Auto,*">
+
+        <!-- Верхняя панель -->
+        <Border Grid.Row="0"
+                Background="#2F5597"
+                Padding="22,16">
+            <Grid ColumnDefinitions="Auto,*">
+                <Button Content="← Назад"
+                        Click="BackButton_Click"
+                        Background="#DCE6F2"
+                        Foreground="Black"
+                        Padding="14,8"
+                        VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1"
+                            Margin="20,0,0,0"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Управление вакансиями"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="Кадровое агентство"
+                               FontSize="14"
+                               Foreground="#E0E8F5"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основная область -->
+        <Grid Grid.Row="1"
+              Margin="20"
+              ColumnDefinitions="1.25*,*"
+              ColumnSpacing="18">
+
+            <!-- Левая часть: поиск и список -->
+            <Border Grid.Column="0"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="16">
+
+                <Grid RowDefinitions="Auto,Auto,*"
+                      RowSpacing="12">
+
+                    <TextBlock Text="Список вакансий"
+                               FontSize="21"
+                               FontWeight="Bold"
+                               Foreground="#263F65"/>
+
+                    <Grid Grid.Row="1"
+                          ColumnDefinitions="*,180"
+                          ColumnSpacing="10">
+
+                        <TextBox x:Name="SearchBox"
+                                 Watermark="Поиск по должности или компании..."
+                                 TextChanged="SearchBox_TextChanged"/>
+
+                        <ComboBox x:Name="FilterStatusBox"
+                                  Grid.Column="1"
+                                  SelectionChanged="FilterStatusBox_SelectionChanged"/>
+                    </Grid>
+
+                    <ListBox x:Name="VacanciesList"
+                             Grid.Row="2"
+                             SelectionMode="Single">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="local:Vacancy">
+                                <Border Background="#F1F5FB"
+                                        CornerRadius="8"
+                                        Padding="12"
+                                        Margin="0,0,0,8">
+
+                                    <StackPanel Spacing="5">
+
+                                        <TextBlock Text="{Binding Title}"
+                                                   FontSize="17"
+                                                   FontWeight="Bold"
+                                                   Foreground="#263F65"/>
+
+                                        <TextBlock Text="{Binding Company}"
+                                                   FontSize="14"
+                                                   Foreground="#444444"/>
+
+                                        <TextBlock Text="{Binding City}"
+                                                   FontSize="13"
+                                                   Foreground="#555555"/>
+
+                                        <TextBlock Text="{Binding RateText}"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#263F65"/>
+
+                                        <TextBlock Text="{Binding Schedule}"
+                                                   FontSize="13"
+                                                   Foreground="#444444"/>
+
+                                        <TextBlock Text="{Binding Status}"
+                                                   FontSize="13"
+                                                   FontWeight="Bold"
+                                                   Foreground="#2F5597"/>
+
+                                        <TextBlock Text="{Binding Requirements}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="12"
+                                                   Foreground="#555555"/>
+
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- Правая часть: добавление вакансии -->
+            <Border Grid.Column="1"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="18">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="10">
+
+                        <TextBlock Text="Добавить вакансию"
+                                   FontSize="21"
+                                   FontWeight="Bold"
+                                   Foreground="#263F65"
+                                   Margin="0,0,0,8"/>
+
+                        <TextBlock Text="Название должности"/>
+                        <TextBox x:Name="TitleBox"
+                                 Watermark="Например, менеджер по продажам"/>
+
+                        <TextBlock Text="Компания-работодатель"/>
+                        <TextBox x:Name="CompanyBox"
+                                 Watermark="Название компании"/>
+
+                        <TextBlock Text="Оплачиваемая ставка (руб./мес.)"/>
+                        <TextBox x:Name="RateBox"
+                                 Watermark="Например, 80000"/>
+
+                        <TextBlock Text="График работы"/>
+                        <TextBox x:Name="ScheduleBox"
+                                 Watermark="Например, 5/2, с 9:00 до 18:00"/>
+
+                        <TextBlock Text="Город"/>
+                        <TextBox x:Name="CityBox"
+                                 Watermark="Город работы"/>
+
+                        <TextBlock Text="Требования к кандидату"/>
+                        <TextBox x:Name="RequirementsBox"
+                                 Watermark="Опыт работы, образование и навыки"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 MinHeight="70"/>
+
+                        <TextBlock Text="Статус вакансии"/>
+                        <ComboBox x:Name="StatusBox"/>
+
+                        <Button Content="Добавить вакансию"
+                                Click="AddButton_Click"
+                                Background="#D9EAD3"
+                                Foreground="Black"
+                                Padding="12"
+                                HorizontalContentAlignment="Center"/>
+
+                        <Button Content="Удалить выбранную вакансию"
+                                Click="DeleteButton_Click"
+                                Background="#F4D7D7"
+                                Foreground="Black"
+                                Padding="12"
+                                HorizontalContentAlignment="Center"/>
+
+                        <TextBlock x:Name="MessageText"
+                                   TextWrapping="Wrap"
+                                   Foreground="#263F65"
+                                   FontSize="13"/>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+        </Grid>
     </Grid>
 </Window>

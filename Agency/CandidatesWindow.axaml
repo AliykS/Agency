@@ -1,11 +1,215 @@
+
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:local="using:Agency"
         x:Class="Agency.CandidatesWindow"
-        Title="CandidatesWindow">
-  <Grid Background="#F5F6FA">
+        Title="Кандидаты — кадровое агентство"
+        Width="1100"
+        Height="720"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen">
 
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#DCEBFA"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="#8FAFD6"/>
+            <Setter Property="CaretBrush" Value="#000000"/>
+        </Style>
+
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#DCEBFA"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="#8FAFD6"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Background" Value="#DCEBFA"/>
+            <Setter Property="Foreground" Value="#000000"/>
+        </Style>
+
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="#EAF2FC"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="#8FAFD6"/>
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="#8FAFD6"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid Background="#F3F5F9"
+          RowDefinitions="Auto,*">
+
+        <!-- Верхняя панель -->
+        <Border Grid.Row="0"
+                Background="#2F5597"
+                Padding="22,16">
+            <Grid ColumnDefinitions="Auto,*">
+                <Button Content="← Назад"
+                        Click="BackButton_Click"
+                        Background="#DCE6F2"
+                        Foreground="Black"
+                        Padding="14,8"
+                        VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1"
+                            Margin="20,0,0,0"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Управление кандидатами"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="База соискателей кадрового агентства"
+                               FontSize="14"
+                               Foreground="#E0E8F5"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основная область -->
+        <Grid Grid.Row="1"
+              Margin="20"
+              ColumnDefinitions="1.2*,*"
+              ColumnSpacing="18">
+
+            <!-- Левая часть: список -->
+            <Border Grid.Column="0"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="16">
+
+                <Grid RowDefinitions="Auto,Auto,*"
+                      RowSpacing="12">
+
+                    <TextBlock Text="Список кандидатов"
+                               FontSize="21"
+                               FontWeight="Bold"
+                               Foreground="#263F65"/>
+
+                    <Grid Grid.Row="1"
+                          ColumnDefinitions="*,180"
+                          ColumnSpacing="10">
+
+                        <TextBox x:Name="SearchBox"
+                                 Watermark="Поиск по ФИО или должности..."
+                                 TextChanged="SearchBox_TextChanged"/>
+
+                        <ComboBox x:Name="FilterStatusBox"
+                                  Grid.Column="1"
+                                  SelectionChanged="FilterStatusBox_SelectionChanged"/>
+                    </Grid>
+
+                    <ListBox x:Name="CandidatesList"
+                             Grid.Row="2"
+                             SelectionMode="Single">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="local:Candidate">
+                                <Border Background="#EAF2FC"
+                                        CornerRadius="8"
+                                        Padding="12"
+                                        Margin="0,0,0,8">
+
+                                    <StackPanel Spacing="5">
+
+                                        <TextBlock Text="{Binding FullName}"
+                                                   FontSize="17"
+                                                   FontWeight="Bold"
+                                                   Foreground="#263F65"/>
+
+                                        <TextBlock Text="{Binding GenderText}"
+                                                   FontSize="13"
+                                                   Foreground="#000000"/>
+
+                                        <TextBlock Text="{Binding PhoneText}"
+                                                   FontSize="13"
+                                                   Foreground="#000000"/>
+
+                                        <TextBlock Text="{Binding EmailText}"
+                                                   FontSize="13"
+                                                   Foreground="#000000"/>
+
+                                        <TextBlock Text="{Binding PositionText}"
+                                                   FontSize="14"
+                                                   Foreground="#263F65"/>
+
+                                        <TextBlock Text="{Binding Status}"
+                                                   FontSize="13"
+                                                   FontWeight="Bold"
+                                                   Foreground="#2F5597"/>
+
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- Правая часть: форма -->
+            <Border Grid.Column="1"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="18">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="10">
+
+                        <TextBlock Text="Добавить кандидата"
+                                   FontSize="21"
+                                   FontWeight="Bold"
+                                   Foreground="#263F65"
+                                   Margin="0,0,0,8"/>
+
+                        <TextBlock Text="ФИО кандидата"/>
+                        <TextBox x:Name="FullNameBox"
+                                 Watermark="Иванов Иван Иванович"/>
+
+                        <TextBlock Text="Пол"/>
+                        <ComboBox x:Name="GenderBox"/>
+
+                        <TextBlock Text="Телефон"/>
+                        <TextBox x:Name="PhoneBox"
+                                 Watermark="+7 (900) 000-00-00"/>
+
+                        <TextBlock Text="Электронная почта"/>
+                        <TextBox x:Name="EmailBox"
+                                 Watermark="example@mail.ru"/>
+
+                        <TextBlock Text="Желаемая должность"/>
+                        <TextBox x:Name="PositionBox"
+                                 Watermark="Например, бухгалтер"/>
+
+                        <TextBlock Text="Статус кандидата"/>
+                        <ComboBox x:Name="StatusBox"/>
+
+                        <Button Content="Добавить кандидата"
+                                Click="AddButton_Click"
+                                Background="#D9EAD3"
+                                Foreground="Black"
+                                Padding="12"
+                                HorizontalContentAlignment="Center"/>
+
+                        <Button Content="Удалить выбранного кандидата"
+                                Click="DeleteButton_Click"
+                                Background="#F4D7D7"
+                                Foreground="Black"
+                                Padding="12"
+                                HorizontalContentAlignment="Center"/>
+
+                        <TextBlock x:Name="MessageText"
+                                   TextWrapping="Wrap"
+                                   Foreground="#263F65"
+                                   FontSize="13"/>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
